@@ -1,0 +1,136 @@
+.pe-opcion {
+    margin-bottom: 10px;
+}
+.pe-opcion-descripcion {
+	margin-bottom: 10px;
+}
+.pe-opcion-img img {
+	display: inline-block;
+	margin: 0 5px 5px 0;
+}
+.pe-opcion label {
+    cursor: pointer;
+    display: inline-block;
+}
+.pe-opcion img {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.pe-test {
+	padding: 60px;
+}
+.pe-test,
+.pe-test label,
+.pe-test p,
+.pe-test input,
+.pe-test select {
+	color: #333!important;
+	font-family: Arial, Helvetica, sans-serif!important;
+	font-weight: normal!important;
+	font-size: 13px!important;
+	line-height: 1.5!important;
+}
+.pe-test {
+	background-color: #fff!important;
+}
+.pe-test select {
+    min-width: 200px;
+    border-radius: 3px;
+    border: solid 1px #d6d6d6;
+    height: 38px;
+    padding: 0 15px;
+    background-color: #fff;
+}
+.pe-test .pe-input {
+    min-width: 200px;
+    border-radius: 3px;
+    border: solid 1px #d6d6d6;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 15px;
+    background-color: #fff;
+}
+.pe-test button {
+	background: #FFD942;
+	border: none;
+	color: #2f2f2f;
+	line-height: 40px;
+	height: 40px;
+	padding: 0 20px;
+	border-radius: 3px;
+	vertical-align: middle;
+}
+.pe-test button:hover {
+	opacity: 0.9;
+}
+.pe-test input {
+	margin-right: 5px;
+}
+.pe-test label {
+	cursor: pointer;
+}
+.pe-test ul {
+	padding: 15px 0;
+}
+.pe-test .resultado {
+	padding: 25px 0;
+}
+.pe-test h1 {
+	color: #333;
+	text-transform: none;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0;
+	font-size: 24px;
+}
+.pe-test ul {
+	list-style: none;
+}
+.pe-test ul p {
+	margin-bottom: 5px;
+}
+.pe-test h2 {
+	text-transform: none;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	margin-bottom: 20px;
+	color:#333;
+}
+.pe-test > h2 {
+	margin-top: 25px;
+}
+.pe-test .superior {
+	background-color: #FFD942;
+	border-bottom: 4px solid #EAA90F;
+	padding: 20px 25px;
+	box-shadow: rgba(0,0,0,.15)0 7px 0;
+}
+.pe-test .tab {
+	padding: 10px 20px;
+	background-color: #e5e5e5;
+	border: none;
+	border-radius: 3px;
+	margin-bottom: 25px;
+}
+.pe-test .tab:hover {
+	background-color: #eaeaea;
+}
+.pe-test .form-tab {
+	background-color: #f8f8f8;
+	padding: 40px;
+}
+.pe-test .enviar {
+	background: #FFD942;
+	border: none;
+	color: #2f2f2f;
+	line-height: 40px;
+	height: 40px;
+	padding: 0 20px;
+	border-radius: 3px;
+	vertical-align: middle;
+}
+.pe-test .enviar:hover {
+	opacity: 0.9;
+}
+.resultado {
+	padding: 25px 60px;
+}

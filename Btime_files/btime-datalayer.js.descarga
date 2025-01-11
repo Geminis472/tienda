@@ -1,0 +1,584 @@
+/**
+ * Vars master
+ */
+const debug = false // true | false
+
+
+/**
+ * init datalayers
+ */
+let pageProduct = document.querySelector(".single-product");
+let pageCart = document.querySelector(".woocommerce-cart-form");
+let pageCheckout = document.querySelector(".checkout.woocommerce-checkout")
+let pageThankYouPage = document.querySelector(".woocommerce-thankyou-order-details")
+let pageThankYouPagePagoEfectivo = document.querySelector("body.woocommerce-checkout .method strong")
+
+const ponerdecimales = (numero) => {
+    if (numero.indexOf(".") == -1) { numero += ".00" } else {
+        if (numero.indexOf(".") == numero.length - 2) { numero += "0" }
+    }
+    return numero;
+}
+
+function string_to_slug(str) {
+    str = str.replace(/^\s+|\s+$/g, ''); // trim
+    str = str.toLowerCase();
+
+    // remove accents, swap ñ for n, etc
+    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    var to = "aaaaeeeeiiiioooouuuunc------";
+    for (var i = 0, l = from.length; i < l; i++) {
+        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+
+    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+        .replace(/\s+/g, '-') // collapse whitespace and replace by -
+        .replace(/-+/g, '-'); // collapse dashes
+
+    return str;
+}
+
+const viewListItems = () => {
+    const productItems = []
+    let linksProducts = document.querySelectorAll(".m-product-card__datalayer")
+
+    if (linksProducts.length) {
+        linksProducts.forEach((element, i) => {
+            let productId = element.getAttribute("data-product_id")
+            let productName = element.getAttribute("data-product_name")
+            let bloque = element.getAttribute("data-bloque")
+            let price = element.getAttribute("data-price");
+            let brand = element.getAttribute("data-brand");
+            let categories = element.getAttribute("data-categories");
+            let idx = element.getAttribute("data-index");
+            let location = element.getAttribute("data-location");
+            productItems.push(
+                {
+                    item_id: productId,
+                    item_name: productName,
+                    price: ponerdecimales(price),
+                    currency: 'PEN',
+                    index: parseInt(idx),
+                    item_brand: brand,
+                    item_category: categories,
+                    item_list_name: bloque,
+                    item_list_id: string_to_slug(bloque),
+                    quantity: 1
+                }
+            )
+
+        })
+
+        if (productItems.length > 0) {
+            // vars
+            const dataLayerData = {
+                event: 'view_item_list',
+                ecommerce: {
+                    items: productItems
+                }
+            }
+
+            // clear
+            dataLayer.push({ ecommerce: null })
+
+            // do datalayer
+            if (!debug) {
+                dataLayer.push(dataLayerData)
+            } else {
+                console.log(dataLayerData)
+            }
+        }
+    }
+}
+viewListItems()
+
+const viewProduct = () => {
+    let quantity = document.querySelector(".ajax_add_to_cart").getAttribute("data-quantity")
+    dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+    dataLayer.push({
+        event: 'view_item',
+        ecommerce: {
+            items: [
+                {
+                    item_id: oProduct.productId,
+                    item_name: oProduct.productName,
+                    price: ponerdecimales(oProduct.price),
+                    currency: 'PEN',
+                    index: 1,
+                    item_brand: oProduct.brand,
+                    item_category: oProduct.brand,
+                    item_list_name: 'Ficha de producto',
+                    item_list_id: 'ficha-de-producto',
+                    quantity: parseInt(quantity)
+                }
+            ]
+        }
+    });
+}
+
+
+const getParameterURL = (parameter, stringUrl) => {
+    let pageUrl = (stringUrl) ? stringUrl : decodeURIComponent(window.location.search.substring(1)),
+        parameters = pageUrl.split('&'),
+        parameterName,
+        i
+    for (i = 0; i < parameters.length; i++) {
+        parameterName = parameters[i].split('=')
+
+        if (parameterName[0] === parameter) {
+            return parameterName[1] === undefined ? true : parameterName[1]
+        }
+    }
+}
+
+var url = new URL(window.location);
+//... register
+let isRegister = getParameterURL('isregister');
+if (isRegister) {
+    dataLayer.push({ "event": "sign_up" });
+    url.searchParams.delete('isregister');
+    window.history.pushState({}, '', url);
+}
+//... login
+let isLogin = getParameterURL('islogin');
+if (isLogin) {
+    dataLayer.push({ "event": "login" });
+    url.searchParams.delete('islogin');
+    window.history.pushState({}, '', url);
+}
+
+
+// ... select product
+let linksProducts = document.querySelectorAll(".m-product-card__datalayer");
+if (linksProducts) {
+    linksProducts.forEach(element => {
+        element.addEventListener('click', function (e) {
+            let productId = this.getAttribute("data-product_id")
+            let productName = this.getAttribute("data-product_name")
+            let price = this.getAttribute("data-price");
+            let brand = this.getAttribute("data-brand");
+            let categories = this.getAttribute("data-categories");
+            let quantity = this.getAttribute("data-quantity");
+            let idx = this.getAttribute("data-index");
+            let location = this.getAttribute("data-location");
+            let domDiscount = document.querySelector(".cart-discount .amount");
+            let totalDiscount = (domDiscount) ? domDiscount.innerText.replace(/(?!-)[^0-9.]/g, '') : 0;
+
+            dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+            dataLayer.push({
+                event: 'select_item',
+                ecommerce: {
+                    items: [
+                        {
+                            item_id: productId,
+                            item_name: productName,
+                            currency: 'PEN',
+                            discount: totalDiscount,
+                            index: parseInt(idx),
+                            item_brand: brand,
+                            item_category: categories,
+                            item_list_name: `${location}`,
+                            price: ponerdecimales(price),
+                            quantity: parseInt(quantity)
+                        }
+                    ]
+                }
+            });
+        })
+    });
+}
+
+
+// .. page sigle product
+if (pageProduct) {
+    viewProduct()
+    let btnAddToCart = pageProduct.querySelector(".ajax_add_to_cart");
+    // ... add to cart
+    if (btnAddToCart) {
+        btnAddToCart.addEventListener('click', function () {
+            let quantity = document.querySelector(".ajax_add_to_cart").getAttribute("data-quantity")
+            dataLayer.push({ ecommerce: null });
+            dataLayer.push({
+                event: 'add_to_cart',
+                ecommerce: {
+                    items: [
+                        {
+                            item_id: oProduct.productId,
+                            item_name: oProduct.productName,
+                            currency: 'PEN',
+                            discount: 0,
+                            index: 1,
+                            item_brand: oProduct.brand,
+                            item_category: oProduct.categories,
+                            item_list_name: 'Ficha de producto',
+                            price: ponerdecimales(oProduct.price),
+                            quantity: parseInt(quantity)
+                        }
+                    ]
+                }
+            });
+        })
+    }
+}
+
+// ... page cart
+if (pageCart) {
+
+    let productsAll = document.querySelectorAll('.product-remove .remove');
+    let oProductsAll = [];
+    productsAll.forEach((elem, i) => {
+        let productId = elem.getAttribute("data-product_id")
+        let productName = elem.getAttribute("data-product_name")
+        let price = elem.getAttribute("data-price");
+        let brand = elem.getAttribute("data-brand");
+        let categories = elem.getAttribute("data-categories");
+        let quantity = elem.getAttribute("data-quantity");
+        let idx = elem.getAttribute("data-index");
+        let domDiscount = document.querySelector(".cart-discount .amount");
+        let totalDiscount = (domDiscount) ? domDiscount.innerText.replace(/(?!-)[^0-9.]/g, '') : 0;
+        oProductsAll.push(
+            {
+                item_id: productId,
+                item_name: productName,
+                currency: 'PEN',
+                discount: parseFloat(totalDiscount),
+                index: parseInt(idx),
+                item_brand: brand,
+                item_category: categories,
+                item_list_name: 'Carrito',
+                price: ponerdecimales(price),
+                quantity: parseInt(quantity)
+            }
+        )
+    })
+
+    //... view_cart
+    dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+    dataLayer.push({
+        event: 'view_cart',
+        ecommerce: {
+            items: oProductsAll
+        }
+    });
+
+    document.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('remove')) {
+            let productId = e.target.getAttribute("data-product_id")
+            let productName = e.target.getAttribute("data-product_name")
+            let price = e.target.getAttribute("data-price");
+            let brand = e.target.getAttribute("data-brand");
+            let categories = e.target.getAttribute("data-categories");
+            let quantity = e.target.getAttribute("data-quantity");
+            let idx = e.target.getAttribute("data-index");
+            //... total discount.
+            let domDiscount = document.querySelector(".cart-discount .amount");
+            let totalDiscount = (domDiscount) ? domDiscount.innerText.replace(/(?!-)[^0-9.]/g, '') : 0;
+
+            // ... remove item product cart
+            dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+            dataLayer.push({
+                event: 'remove_from_cart',
+                ecommerce: {
+                    items: [
+                        {
+                            item_id: productId,
+                            item_name: productName,
+                            currency: 'PEN',
+                            discount: parseFloat(totalDiscount),
+                            index: parseInt(idx),
+                            item_brand: brand,
+                            item_category: categories,
+                            item_list_name: 'Carrito',
+                            price: ponerdecimales(price),
+                            quantity: parseInt(quantity)
+                        }
+                    ]
+                }
+            });
+        }
+    });
+}
+
+//... page checkout
+if (pageCheckout) {
+    let allProducts = document.querySelectorAll(".m-products__item");
+    const productItems = [];
+    if (allProducts) {
+        allProducts.forEach((elem, i) => {
+            let productId = elem.getAttribute("data-product_id")
+            let productName = elem.getAttribute("data-title")
+            let price = elem.getAttribute("data-price");
+            let brand = elem.getAttribute("data-brand");
+            let categories = elem.getAttribute("data-categories");
+            let quantity = elem.getAttribute("data-quantity");
+
+            //... total discount.
+            let domDiscount = document.querySelector(".cart-discount .amount");
+            let totalDiscount = (domDiscount) ? domDiscount.innerText.replace(/(?!-)[^0-9.]/g, '') : 0;
+
+            productItems.push({
+                item_id: productId,
+                item_name: productName,
+                currency: 'PEN',
+                discount: parseFloat(totalDiscount),
+                index: (i + 1),
+                item_brand: brand,
+                item_category: categories,
+                item_list_name: 'Checkout',
+                price: ponerdecimales(price),
+                quantity: parseInt(quantity)
+            })
+        })
+
+
+        //... start checkout
+        dataLayer.push({ ecommerce: null });
+        dataLayer.push({
+            event: 'begin_checkout',
+            ecommerce: {
+                items: productItems
+            }
+        });
+
+        // ... view shipping
+        let goPagar1 = document.querySelector('#place_order');
+        goPagar1.addEventListener('click', function (e) {
+            let domTotal = document.querySelector(".order-total .amount");
+            let totalPay = (domTotal) ? domTotal.innerText.replace(/(?!-)[^0-9.]/g, '') : 0;
+
+            let nameMethodOption = document.querySelector('input[name="payment_method"]:checked + label').innerText;
+
+            let domCupon = document.querySelector(".cart-discount");
+            let cuponLabel = (domCupon) ? domCupon.getAttribute("data-code") : "";
+
+            let payMethod = document.querySelector('input[name="payment_method"]:checked').value;
+
+            dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+            dataLayer.push({
+                event: 'add_payment_info',
+                ecommerce: {
+                    currency: 'PEN',
+                    value: ponerdecimales(totalPay),
+                    coupon: cuponLabel,
+                    payment_type: nameMethodOption.trim(),
+                    payment_card_brand: payMethod,
+                    items: productItems
+                }
+            });
+
+        })
+
+
+        // ... view payment
+        let goPagar = document.querySelector('#btn-go_pagar');
+        goPagar.addEventListener('click', function (e) {
+            let domTotal = document.querySelector(".order-total .amount");
+            let totalPay = (domTotal) ? domTotal.innerText.replace(/(?!-)[^0-9.]/g, '') : 0;
+
+            let domShipping = document.querySelector(".m-step-delivery .m--active");
+            let shippingText = (domShipping) ? domShipping.innerText : "";
+
+            let domCupon = document.querySelector(".cart-discount");
+            let cuponLabel = (domCupon) ? domCupon.getAttribute("data-code") : "";
+
+            dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+            dataLayer.push({
+                event: 'add_shipping_info',
+                ecommerce: {
+                    currency: "PEN",
+                    value: ponerdecimales(totalPay),
+                    coupon: cuponLabel,
+                    shipping_tier: shippingText,
+                    items: productItems
+                }
+            });
+        })
+    }
+}
+
+if (pageThankYouPagePagoEfectivo && pageThankYouPagePagoEfectivo.innerText == 'Banca móvil / Internet vía PagoEfectivo') {
+    let domOrderNum = document.querySelector('.order_details .order strong');
+    let orderNum = (domOrderNum) ? domOrderNum.innerText.replace(/(?!-)[^0-9.]/g, '') : "N/A";
+
+    let domTotal = document.querySelector('.order_details .total span');
+    let total = (domTotal) ? domTotal.innerText.replace(/(?!-)[^0-9.]/g, '') : "N/A";
+
+    dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+    dataLayer.push({
+        event: 'purchase',
+        ecommerce: {
+            transaction_id: orderNum,
+            value: total,
+            tax: "",
+            currency: "PEN",
+            coupon: "cupon_descuento",
+        }
+    });
+}
+
+if (pageThankYouPage) {
+    let domOrderNum = document.querySelector('.woocommerce-order-overview__order.order');
+    let orderNum = (domOrderNum) ? domOrderNum.innerText.replace(/(?!-)[^0-9.]/g, '') : "N/A";
+
+    let domTotal = document.querySelector('.m-thank-you-order__order_total');
+    let total = (domTotal) ? domTotal.innerText.replace(/(?!-)[^0-9.]/g, '') : "N/A";
+
+    let domShipping = document.querySelector('.m-thank-you-order__shipping');
+    let shipping = (domShipping) ? domShipping.innerText.replace(/(?!-)[^0-9.]/g, '') : "N/A";
+
+    let domDiscount = document.querySelector('.m-thank-you-order__discount');
+    let discount = (domDiscount) ? domDiscount.innerText.replace(/(?!-)[^0-9.]/g, '') : "N/A";
+
+    let domCupon = document.querySelector(".m-thank-you-order__cupon-hiden");
+    let cuponLabel = (domCupon) ? domCupon.innerText : "";
+
+    const productItems = [];
+    if (oProduct) {
+        oProduct.forEach((product) => {
+            productItems.push({
+                item_id: product.productId,
+                item_name: product.productName,
+                coupon: cuponLabel,
+                currency: 'PEN',
+                discount: Math.abs(parseFloat(discount)),
+                index: 1,
+                item_brand: product.brand,
+                item_category: product.categories,
+                item_list_name: 'Purchase',
+                price: ponerdecimales(product.price),
+                quantity: parseInt(product.quantity)
+            })
+        })
+    }
+
+    dataLayer.push({ ecommerce: null });  // Clear the previous ecommerce object.
+    dataLayer.push({
+        event: 'purchase',
+        ecommerce: {
+            transaction_id: orderNum,
+            value: total,
+            tax: "",
+            shipping: shipping,
+            currency: "PEN",
+            coupon: "cupon_descuento",
+            items: productItems
+        }
+    });
+}
+
+/**
+ *  Perfilador
+ */
+const $perfilador       = document.querySelector('#profiler')
+const isPerfiladorPage  = ($perfilador) ? true : false
+
+// data layer
+function doDataLayerPerfilador() {
+    /**
+     * Step one
+     */
+    const dataLayerStepOne = {
+        event: 'paso1_perfilador',
+        virtualPageURL: '/perfilador/paso1/paraquien',
+        virtualPageTitle: 'Perfilador - Paso 1'
+    }
+
+    // do datalayer
+    if (!debug) {
+        dataLayer.push(dataLayerStepOne)
+    } else {
+        console.log(dataLayerStepOne)
+    }
+
+
+
+
+
+
+    /**
+     * Step 2/ Step 3
+     */
+    const $nextButton = document.querySelector('#profiler-navigation button[data-action="next"]')
+
+    // validate
+    if ($nextButton) {
+        // event
+        $nextButton.addEventListener('click', e => {
+            // vars
+            let dataLayerStepTwoThree = {}
+            const numSteps      = 4
+            const $currentStep  = document.querySelector('#profiler .m-profiler-scene.js--active')
+            const valueStep     = ($currentStep) ? +$currentStep.dataset.step + 1 : false
+
+            if (valueStep && valueStep < numSteps) {
+                switch (valueStep) {
+                    case 2:
+                        dataLayerStepTwoThree = {
+                            event: 'paso2_perfilador',
+                            virtualPageURL: '/perfilador/paso2/estilo',
+                            virtualPageTitle: 'Perfilador - Paso 2'
+                        }
+                        break
+
+                    case 3:
+                        dataLayerStepTwoThree = {
+                            event: 'paso3_perfilador',
+                            virtualPageURL: '/perfilador/paso3/precio',
+                            virtualPageTitle: 'Perfilador - Paso 3'
+                        }
+                        break
+                }
+
+                // do datalayer
+                if (!debug) {
+                    dataLayer.push(dataLayerStepTwoThree)
+                } else {
+                    console.log(dataLayerStepTwoThree)
+                }
+            }
+        })
+    }
+
+
+
+
+
+
+
+
+
+    /**
+     * Options
+     */
+    const $options = document.querySelectorAll('.m-profiler-scene__options button')
+
+    // iterating
+    $options.forEach($option => {
+        // validate
+        if ($option) {
+            $option.addEventListener('click', e => {
+                // vars
+                const value         = $option.dataset.value
+                const dataLayerData = {
+                    event: 'select_option',
+                    option_name: value
+                }
+
+                // validate
+                if (value) {
+                    // do datalayer
+                    if (!debug) {
+                        dataLayer.push(dataLayerData)
+                    } else {
+                        console.log(dataLayerData)
+                    }
+                }
+            })
+        }
+    })
+}
+
+// run data layer
+if (isPerfiladorPage) {
+    doDataLayerPerfilador()
+}

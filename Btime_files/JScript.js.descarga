@@ -1,0 +1,15 @@
+jQuery(document).ready(function() {
+    jQuery("#fancy").fancybox({
+    width				: 615,
+    height			: 500,
+    autoDimensions    : false,
+    autoScale     	: false,
+    transitionIn		: 'none',
+    transitionOut		: 'none',
+    type				: 'iframe',
+    iframe: {
+      scrolling : 'yes',
+      preload   : true
+      }
+    });
+});

@@ -1,0 +1,286 @@
+@font-face {
+    font-family: 'nunitoextralight_italic';
+    src: url('../assets/fonts/nunito-italicwght-webfont.woff2') format('woff2'),
+         url('../assets/fonts/nunito-italicwght-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'nunitoextralight';
+    src: url('../assets/fonts/nunitoitalwght-webfont.woff2') format('woff2'),
+         url('../assets/fonts/nunitoitalwght-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+#cuotealo-available-product {
+    background-color: #f3f3f3;
+    border: solid 1px #cccccc;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#cuotealo-available-product .cuotealo-text,
+#cuotealo-available-product .cuotealo-logo {
+    background-color: #f1f1f1;
+    flex: 1 1 auto;
+}
+
+#cuotealo-available-product p {
+    margin: 0;
+    padding: 0;
+}
+
+#cuotealo-available-product i.cuotealo-icon {
+    width: 60px;
+    height: 10px;
+    display: inline-block;
+    position: relative;
+}
+
+#cuotealo-available-product i.cuotealo-icon::before {
+    content: '';
+    width: 60px;
+    height: 25px;
+    display: block;
+    background-image: url(images/cuotealo.png);
+    background-size: cover;
+    position: absolute;
+    top: -90%;
+}
+
+#cuotealo-modal-btn{
+    font-weight: bold;
+    text-decoration: underline;
+    color: #000000;
+    cursor: pointer;
+}
+
+.cuotealo-hidden {
+    display: none;
+}
+
+.cuotelao-modal .modal-inner-wrap {
+    background-color: #f7f7f7;
+}
+
+.cuotelao-modal .modal-header {
+    padding-bottom: 0.2rem;
+}
+
+.cuotelao-modal .modal-header h1 {
+    display: none;
+}
+
+.cuotealo-modal-inner-content {
+    text-align: center;
+    padding: 0 15px;
+}
+
+.cuotealo-modal-inner-content img {
+    margin: 30px auto 25px;
+    max-width: 230px;
+}
+
+.cuotealo-modal-inner-content #cuotealo-product-price {
+    margin: 15px 0 15px;
+    padding: 0;
+}
+
+.cuotealo-modal-inner-content #cuotealo-offers {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 30px;
+}
+
+.cuotealo-modal-inner-content #cuotealo-t-and-c {
+    margin: 10px 0 25px;
+    padding: 0;
+}
+
+.cuotealo-modal-inner-content #cuotealo-offers .cuotealo-offer {
+    background-color: #ffffff;
+    border: solid 1px #cccccc;
+    border-radius: 5px;
+    padding: 8px 15px;
+    color: #002690;
+    margin: 10px 0;
+}
+
+.cuotealo-modal-inner-content #cuotealo-offers .cuotealo-offer h3 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #002690;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.cuotealo-modal-inner-content .cuotealo-simulator-wrapper {
+    margin: 45px 0;
+}
+
+.cuotealo-modal-inner-content .cuotealo-simulator-wrapper a {
+    background: #002690;
+    padding: 8px 30px;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.cuotelao-modal .modal-footer {
+    display: none;
+}
+
+.blocker {
+    z-index: 1500 !important;
+}
+
+.payment_method_bcp_cuotealo .cuotealo-bcp-description {
+    padding: 0 0 10px 10px;
+    border-bottom: solid 1px #dedede;
+    margin-bottom: 10px;
+}
+
+.payment_method_bcp_cuotealo .cuotealo-txt a {
+    color: #002690;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.payment_method_bcp_cuotealo .cuotealo-offer {
+    color: #002690;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    position: relative;
+}
+
+.payment_method_bcp_cuotealo .cuotealo-offer::after {
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: 40%;
+    left: 0;
+    bottom: 0px;
+    background-color: #cccccc;
+}
+
+/* Estilos modal a la medida bcp */
+.modal-bcp {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 94%;
+    max-width: 905px;
+    min-height: 250px;
+    position: fixed;
+    z-index: 100001;
+    background-color: white;
+    border-radius: 15px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .modal-bcp .flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .modal-bcp input {
+    padding: 0.7rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9em;
+  }
+  
+  #cuotealo-modal button {
+    cursor: pointer;
+    border: none;
+    font-weight: 600;
+  }
+    
+  .btn-close-bcp {
+    transform: translate(10px, -20px);
+    padding: 0.5rem 0.7rem;
+    background: #eee;
+    border-radius: 50%;
+    font-family: nunitoextralight;
+    color: #002690;
+    font-weight: bold;
+    font-size: 15px;
+    position: absolute;
+    top: 10px;
+    right: 0;
+  }
+  
+  .overlay-bcp {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 100000;
+  }
+  
+  .hidden {
+    display: none;
+  }
+
+  @media only screen and (max-width: 512px) {
+    .cuotealo-modal-inner-content img {
+        max-width: 130px;
+        margin: 20px auto 10px;
+    }
+
+    .cuotealo-modal-inner-content p {
+        font-size: .8125rem;
+    }
+
+    .cuotealo-modal-inner-content #cuotealo-p {
+        margin: 10px 0 10px;
+    }
+
+    .cuotealo-modal-inner-content #cuotealo-product-price {
+        margin: 0;
+    }
+
+    .cuotealo-modal-inner-content #cuotealo-offers {
+        margin-top: 10px;
+    }
+
+    .cuotealo-modal-inner-content #cuotealo-offers .cuotealo-offer span {
+        font-size: 0.75rem;
+    }
+
+    .cuotealo-modal-inner-content #cuotealo-offers .cuotealo-offer h3 {
+        font-size: 1.12rem;
+        padding: 0;
+    }
+
+    .cuotealo-modal-inner-content #cuotealo-offers .cuotealo-offer {
+        padding: 5px 8px;
+        margin: 5px 0;
+    }
+
+    .cuotealo-modal-inner-content #cuotealo-t-and-c {
+        margin: 5px 0 5px;
+        font-size: 0.75rem;
+    }
+
+    .cuotealo-modal-inner-content .cuotealo-simulator-wrapper {
+        margin: 20px 0 15px;
+    }
+  }

@@ -1,0 +1,47 @@
+@font-face {
+  font-family: Benton-Bold;
+  font-style: normal;
+  font-weight: 300;
+  src: url('https://components-bnpl-pe-bbva-production.moprestamo.com/fonts/BentonSansBBVA-Bold.woff') format('woff');
+  unicode-range: U+000-5FF;
+}
+
+@font-face {
+  font-family: Benton-Italic;
+  font-style: normal;
+  font-weight: 300;
+  src: url('https://components-bnpl-pe-bbva-production.moprestamo.com/fonts/BentonSansBBVA-Italic.woff') format('woff');
+  unicode-range: U+000-5FF;
+}
+
+@font-face {
+  font-family: Benton-Light;
+  font-style: normal;
+  font-weight: 300;
+  src: url('https://components-bnpl-pe-bbva-production.moprestamo.com/fonts/BentonSansBBVA-Light.woff') format('woff');
+  unicode-range: U+000-5FF;
+}
+
+@font-face {
+  font-family: Benton-Medium;
+  font-style: normal;
+  font-weight: 300;
+  src: url('https://components-bnpl-pe-bbva-production.moprestamo.com/fonts/BentonSansBBVA-Medium.woff') format('woff');
+  unicode-range: U+000-5FF;
+}
+
+@font-face {
+  font-family: Benton-Medium-Italic;
+  font-style: normal;
+  font-weight: 300;
+  src: url('https://components-bnpl-pe-bbva-production.moprestamo.com/fonts/BentonSansBBVA-MediumItalic.woff') format('woff');
+  unicode-range: U+000-5FF;
+}
+
+@font-face {
+  font-family: Benton-Regular;
+  font-style: normal;
+  font-weight: 300;
+  src: url('https://components-bnpl-pe-bbva-production.moprestamo.com/fonts/BentonSansBBVA-Regular.woff') format('woff');
+  unicode-range: U+000-5FF;
+}

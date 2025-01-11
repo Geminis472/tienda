@@ -1,0 +1,14 @@
+function showDiv(elem){
+    if(elem.value == 1) {
+        document.getElementById('pe-opcion-1').style.display = "block";
+        document.getElementById('pe-opcion-2').style.display = "none";
+	}
+    if(elem.value == 2) {
+        document.getElementById('pe-opcion-1').style.display = "none";
+        document.getElementById('pe-opcion-2').style.display = "block";
+    }
+    if(elem.value == '') {
+        document.getElementById('pe-opcion-1').style.display = "none";
+        document.getElementById('pe-opcion-2').style.display = "none";
+    }
+}
